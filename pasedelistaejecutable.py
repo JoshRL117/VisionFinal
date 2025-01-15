@@ -66,7 +66,7 @@ def start_camera():
 
     # Cargar el modelo y el escalador
     try:
-        mlp_loaded = joblib.load('./mlp_mode_Paselistal2.pkl')
+        mlp_loaded = joblib.load('./mlp_mode_Paselistal23.pkl')
         scaler_loaded = joblib.load('./scaler_paselista2.pkl')
     except Exception as e:
         messagebox.showerror("Error", f"Error al cargar el modelo: {e}")
@@ -85,7 +85,9 @@ def start_camera():
         face = face_image_preprocess(frame)
         new_example_scaled = scaler_loaded.transform(face)
         prediction = mlp_loaded.predict(new_example_scaled)[0]
+        print(f"Prediction ->>>>>>>>>>>>>>>>>>>>>>>>>>{prediction}")
         predictions.append(prediction)
+        time.sleep(0.5)
 
         # Mostrar la cámara
         cv2.putText(frame, "Identificando...", (50, 50),
@@ -125,7 +127,7 @@ def show_result_window(message):
         result_window.destroy()
     
     # Configurar el temporizador para cerrar la ventana después de 5 segundos
-    result_window.after(5000, close_after_delay)
+    result_window.after(3000, close_after_delay)
     
     # Agregar el botón de cerrar manualmente
     close_button = tk.Button(result_window, text="Cerrar", command=result_window.destroy, font=("Arial", 12))
