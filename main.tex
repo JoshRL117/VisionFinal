@@ -1,0 +1,532 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel} 
+\usepackage{booktabs} % Para realizar tablas.
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabu} % Para extender tablas en toda la pagina.
+\usepackage{cite}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny,
+    breaklines=true,
+    frame=single,
+    captionpos=b,
+    tabsize=4
+}
+\usepackage{amsmath, amssymb, amsfonts, amsthm} % Paquete de matemáticas.
+\usepackage{algorithmic}
+\usepackage{graphicx} % Para insertar imágenes.
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{svg}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{biblatex} % Manejador de bibliografía.
+\usepackage[margin=1in]{geometry} % Para los márgenes del documento.
+\usepackage{fancyhdr}
+\usepackage[colorlinks]{hyperref} % Para links en el documento.
+\usepackage{float}
+\usepackage{enumitem} % Para listas.
+\setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{2.5}
+\setlength{\parskip}{1em} % Para agregar espacios entre párrafos.
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+% Keywords command
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords---}} #1
+}
+
+\title{Implementación de un sistema de automatización para la gestión de asistencia mediante el uso de reconocimiento facial y de caracteres}
+\author{
+    Isabella Jiménez Bravo, Melissa Alejandra \\
+    York Sánchez y Joshua Rodríguez López\\
+    \small -  Universidad de Xalapa
+    \small - Visión Artificial  -
+}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%La inteligencia artificial ha incrementado su popularidad gracias al interés en diversos campos en los que ha sido implementado. Este trabajo se centra en la implementación de un sistema de gestión de asistencia que utiliza tecnologías de reconocimiento facial y de caracteres, abordando los retos de los métodos tradicionales de registro de asistencia que son propensos a errores y requieren intervención manual constante.
+
+%La propuesta incluye una propuesta metodológico que contempla la recolección y preparación de datos, el procesamiento de imágenes, el desarrollo de modelos de redes neuronales y la evaluación del rendimiento del sistema. Se destaca la relevancia de las técnicas de visión computacional en la automatización del registro de asistencia, así como su potencial para mejorar la experiencia educativa y administrativa en instituciones educativas y laborales. 
+%\end{abstract} \hspace{5pt}
+
+\keywords{Inteligencia Artificial, Visión computacional, Reconocimiento facial, Reconocimiento de caracteres (OCR), Gestión de Asistencia, Técnicas de aprendizaje automático}
+
+%\keywords{ Artificial Intelligence, Facial Recognition, Character Recognition, Attendance Management System, Computer Vision, Neural Networks, Automation, Image Processing}
+
+\renewcommand{\abstractname}{Abstract}
+\begin{abstract}
+Artificial intelligence has gained popularity due to its applications in various fields. This work focuses on the implementation of an attendance management system that utilizes facial and character recognition technologies, addressing the challenges of traditional attendance methods that are error-prone and require constant manual intervention.
+
+The proposal includes a methodological approach involving data collection and preparation, image processing, neural network model development, and system performance evaluation. The relevance of computer vision techniques in automating attendance registration is highlighted, as well as their potential to improve the educational and administrative experience in educational and workplace institutions.
+\end{abstract}
+
+
+\renewcommand{\abstractname}{Resumen}
+\begin{abstract}
+La inteligencia artificial ha incrementado su popularidad gracias al interés en diversos campos en los que ha sido implementada. Este trabajo se centra en la implementación de un sistema de gestión de asistencia que utiliza tecnologías de reconocimiento facial y de caracteres, abordando los retos de los métodos tradicionales de registro de asistencia que son propensos a errores y requieren intervención manual constante.
+
+La propuesta incluye una propuesta metodológica que contempla la recolección y preparación de datos, el procesamiento de imágenes, el desarrollo de modelos de redes neuronales y la evaluación del rendimiento del sistema. Se destaca la relevancia de las técnicas de visión computacional en la automatización del registro de asistencia, así como su potencial para mejorar la experiencia educativa y administrativa en instituciones educativas y laborales.
+\end{abstract}
+
+
+
+
+\section{Introducción.}
+La inteligencia artificial (IA) es un campo de estudio que ha estado en auge en los últimos años debido a las aplicaciones de esta en distintos sectores, desde el entretenimiento hasta el sector médico. Su capacidad para transformar procesos, automatizar tareas y resolver problemas complejos ha llamado la atención del público en general, empresas e investigadores.
+
+De acuerdo con Rouhiainen, la inteligencia artificial se define como la capacidad de las máquinas para usar algoritmos, aprender de los datos e utilizar lo aprendido en la toma de decisiones tal y como lo haría un ser humano \cite{b2}.
+
+Las aplicaciones técnicas de la IA abarcan una amplia gama de áreas, incluyendo el análisis de datos, detección de patrones, la predicción de eventos o comportamientos, y la clasificación de información, entre otros. Dentro de este vasto campo, han surgido múltiples ramas de investigación especializadas; como la optimización, el cómputo evolutivo, el procesamiento del lenguaje natural y la visión artificial, cada una con aplicaciones y enfoques únicos, aunque estas ramas se pueden combinar.
+
+En particular, la visión artificial es una rama de investigación que permite a las máquinas interpretar y comprender el mundo visual. Esto implica el uso de cámaras para obtener datos de fotos en tiempo real, imágenes o videos, y así, realizar una extracción y análisis de información relevante. 
+
+Según García y Caranqui, la visión artificial puede ser definida como los procesos de obtención, caracterización e interpretación  de información  de  imágenes  tomadas  desde  un  mundo  tridimensional a  partir  de imágenes bidimensionales \cite{b3}. Esta tecnología es aplicada en áreas como la robótica, la medicina y la seguridad.
+
+Dentro de la visión artificial existen distintos subcampos, como el reconocimiento facial y de caracteres. Estos subcampos pueden ser utilizados como soluciones eficaces para la automatización de la gestión de asistencia. Estas tecnologías no solo permiten identificar a los individuos de manera precisa y rápida, sino que también mejoran la experiencia de los estudiantes y optimizan los procesos administrativos en instituciones educativas y laborales.
+
+\section{Planteamiento del problema.}
+La gestión de asistencia en instituciones educativas o laborales a menudo se enfrenta a desafíos, como el registro manual, que es propenso a errores y genera una pérdida de tiempo, errores en el cálculo de bonos y descuentos, absentismo laboral y descontento en los pagos. 
+
+En el ámbito educativo, la falta de precisión en el registro de asistencia puede traducirse en problemas para evaluar el compromiso y desempeño de los estudiantes, lo que a su vez afecta negativamente la calidad de la enseñanza y la experiencia académica. Según Shireesha y otros autores (2013), los sistemas tradicionales de asistencia son insuficientes para satisfacer las demandas de instituciones modernas, especialmente en contextos donde se busca optimizar recursos y mejorar la exactitud de los datos \cite{b16}.
+
+La falta de precisión en el control de asistencia puede afectar negativamente tanto la calidad de la enseñanza como la experiencia de los estudiantes, lo que subraya la necesidad de un enfoque más eficiente.
+
+
+\section{Pregunta de investigación.}
+¿Cómo se puede implementar un sistema de automatización que utilice reconocimiento facial y de caracteres para mejorar la precisión en la gestión de asistencia en instituciones educativas y laborales?
+
+\section{Justificación.}
+La gestión de asistencia es un proceso crucial en diversos contextos, como instituciones educativas y empresas, donde es fundamental tener un control preciso y eficiente sobre el personal o los participantes. Sin embargo, los métodos tradicionales utilizados para el registro de asistencia, como las listas manuales o las credenciales de identificación, presentan varias desventajas. Estos enfoques son susceptibles a errores humanos, pueden ser objeto de manipulación, son ineficientes en términos de tiempo y requieren una intervención constante por parte del personal para asegurar su correcta aplicación.
+
+En este contexto, el reconocimiento facial ha demostrado ser una herramienta eficaz para la identificación automática de personas, evitando los posibles errores manuales y mejorando la precisión en el control de asistencia. 
+
+Este proyecto se presenta como una herramienta que podría ser altamente efectiva para optimizar los sistemas de control de asistencia, especialmente en un contexto donde la digitalización de procesos es cada vez más relevante. La combinación de reconocimiento facial y reconocimiento de caracteres ofrece una solución moderna que no solo podría agilizar el registro de asistencia, sino que también tiene el potencial de reducir errores y fraudes, incrementar la productividad y mejorar la experiencia de los usuarios.
+\FloatBarrier
+
+
+\section{Objetivos.}
+\subsection{Objetivo general.}
+Desarrollar e implementar un sistema de automatización para la gestión de asistencia en instituciones que utilice tecnologías de reconocimiento facial y de caracteres.
+
+\subsection{Objetivos específicos.}
+\begin{itemize}
+    \item Investigar y seleccionar las tecnologías adecuadas de reconocimiento facial y de caracteres que se integren en el sistema propuesto.
+    \item Diseñar un prototipo funcional del sistema de gestión de asistencia que incluya una interfaz de usuario.
+    \item Implementar el sistema para evaluar su rendimiento en términos de precisión y eficiencia en comparación con los métodos tradicionales de registro de asistencia.
+\end{itemize}
+\FloatBarrier
+
+
+\section{Marco Referencial.}
+El problema que buscamos abordar ha persistido durante varios años, motivando la realización de múltiples iniciativas orientadas a su resolución. Diversos estudios han explorado la implementación de métodos y enfoques innovadores para monitorear la asistencia de manera eficiente. 
+
+
+Por ejemplo, Shoewu, Oluwagbemiga e Idowu (2012) propusieron un sistema de gestión de asistencia basado en datos biométricos. Este sistema compara los datos ingresados con los almacenados previamente en una base de datos y consta de dos etapas: \textbf{inscripción} y \textbf{autenticación}. Durante la inscripción, los datos biométricos se registran y almacenan en la base de datos principal, mientras que, en la autenticación, los datos se capturan nuevamente para compararlos con los existentes \cite{b4}. 
+
+Asimismo, Singh, Khan, Singh y otros (2015) propusieron un sistema compuesto por un hardware compacto, un servidor remoto y componentes de software. Este sistema permite la adquisición de datos manualmente o mediante sensores electrónicos. Además, el modelo puede ser adaptado para diversas aplicaciones, como encuestas, monitoreo de circuitos cerrados en industrias y hospitales, o sistemas de gestión de asistencia en escuelas y universidades \cite{b5}.
+
+Por su parte, Kim (2016) desarrolló un prototipo para gestionar la asistencia utilizando \textbf{Near Field Communication (NFC)}, una tecnología de comunicación inalámbrica de corto alcance que permite la transferencia de datos entre dispositivos cercanos. El sistema propuesto por Kim consta de dos aplicaciones: una para profesores y otra para estudiantes. Este sistema automatiza la administración de la asistencia, resolviendo problemas como el registro por delegación, la pérdida de tiempo en clase y los costos adicionales asociados \cite{b6}.
+
+En 2021, Kodali y Hemadri presentaron un método basado en reconocimiento facial para registrar asistencia. Su enfoque utiliza una red supervisada de tamaño reducido para identificar rostros en un aula. Además, desarrollaron una aplicación web para facilitar el uso del sistema por parte de los usuarios \cite{b1}.
+
+El diseño de sistemas de gestión de asistencia se fundamenta en diversos conceptos y tecnologías. En este proyecto, se emplearon herramientas como el \textbf{Reconocimiento Óptico de Caracteres (OCR)} y el algoritmo \textbf{Haar Cascade}.
+
+El \textbf{OCR} permite convertir texto en imágenes escaneadas a datos procesables por computadora, independientemente de si el texto está escrito a mano o impreso. Su eficacia depende del preprocesamiento aplicado a las imágenes y, en muchos casos, del postprocesamiento para eliminar ruido y corregir errores \cite{b9}.
+
+Por otro lado, el \textbf{Haar Cascade} es una técnica especializada en la detección de objetos mediante patrones rectangulares que evalúan cambios en el brillo de la imagen. Este método se utiliza ampliamente para identificar características específicas, como bordes o estructuras faciales, y se implementa mediante clasificadores en cascada, que optimizan la detección rápida y eficiente de objetos \cite{b10}.
+
+Un concepto fundamental en estas tecnologías es la \textbf{Región de Interés (ROI)}, que delimita una parte específica de la imagen a manipular o analizar. Dependiendo del problema, esta región puede tener formas como rectángulos, círculos u otras configuraciones \cite{b11}..
+
+En este proyecto, se utilizó la biblioteca \textbf{Pytesseract} para el reconocimiento de texto, empleando la técnica de \textbf{momentos de Hu}. Este enfoque permite extraer siete características invariantes a transformaciones como traslación, escalado y rotación, facilitando la detección de objetos sin importar su posición en la imagen \cite{b14}.
+
+ 
+
+
+% marco referencial
+% trabajos similares
+% criterio de inclsuion
+% vision computacional
+% tecnicas
+\FloatBarrier
+
+
+\section{Metodología.}
+El desarrollo del sistema de automatización para la gestión de asistencia mediante tecnologías de reconocimiento facial y de caracteres se llevará a cabo utilizando herramientas como OpenCV, redes neuronales, Python, Pytesseract y la biblioteca re. El proceso metodológico se estructurará en las siguientes fases:
+\subsection{Instalación de bibliotecas.}
+Las bibliotecas utilizadas para el proyecto fueron las siguientes:\par 
+\begin{enumerate}
+    \item tkinder
+    \item OpenCV
+    \item numpy 
+    \item joblib
+    \item pyttsx3
+    \item time 
+    \item datetime
+    \item collections 
+    \item pyteseract 
+\end{enumerate}
+Aunque la mayoría de las bibliotecas vienen preinstaladas con Python en Visual Studio Code, en el caso de no ser así, el proceso para instalarla sería de la siguiente forma:\par
+\begin{enumerate}
+    \item Abrir una terminal en visual studio code.
+    \item Escribe el comando pip install y con el nombre de la bibloteca correspondiente 
+\end{enumerate}
+No obstante, en el caso de Pyteseract es diferente ya que no se instala de la misma manera.\par 
+\begin{enumerate}
+    \item Instalar Python en el sistema (si aún no está instalado). Puedes descargarlo desde la página oficial: \url{https://www.python.org/}.
+    \item Instalar el paquete \texttt{pytesseract} utilizando \texttt{pip}. Abre una terminal o consola y ejecuta el siguiente comando:
+    \begin{verbatim}
+    pip install pytesseract
+    \end{verbatim}
+    \item Descargar e instalar Tesseract-OCR, ya que \texttt{pytesseract} es simplemente una interfaz de Python para este software. Sigue estos pasos:
+    \begin{enumerate}
+        \item Ve al repositorio oficial de Tesseract-OCR: \url{https://github.com/tesseract-ocr/tesseract}.
+        \item Descarga la versión correspondiente a tu sistema operativo.
+        \item Instala Tesseract siguiendo las instrucciones específicas de tu sistema:
+        \begin{itemize}
+            \item \textbf{Windows}: Descarga el instalador ejecutable (EXE) y sigue el asistente de instalación.
+            \item \textbf{Linux}: Utiliza el siguiente comando:
+            \begin{verbatim}
+            sudo apt-get install tesseract-ocr
+            \end{verbatim}
+            \item \textbf{MacOS}: Usa \texttt{brew} para instalarlo:
+            \begin{verbatim}
+            brew install tesseract
+            \end{verbatim}
+        \end{itemize}
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Fase de Recolección y Preparación de Datos.}
+En esta fase, se desarrolló una herramienta para extraer el nombre de la persona que sostendrá una tarjeta aproximadamente a la altura del pecho. El proceso para obtener y procesar los datos se llevó a cabo de la siguiente manera:
+
+\begin{itemize}
+    \item Identificación de la región de interés (ROI): Se delimitó la región central de la imagen, donde se encuentra el texto (nombre de la persona), con el objetivo de crear un directorio de imágenes correspondiente a cada individuo.
+    \item Preprocesamiento de la imagen: Se ajusta el tamaño de la ROI para ampliarla y se aplica una binarización invertida, mejorando la calidad del texto a extraer.
+    \item Extracción de texto: Se utiliza la función de Pytesseract para convertir el contenido procesado en texto manejable.
+    \item Limpieza de datos: Se emplea la biblioteca \textbf{'re'} para eliminar ruidos o caracteres no deseados en el texto, garantizando la correcta creación de los directorios.
+\end{itemize}
+
+Este proceso permite estructurar de manera organizada los datos en directorios etiquetados con el nombre de cada persona, lo que facilitará las predicciones posteriores \cite{13}.\par 
+
+Asimismo, estas mismas imágenes con el mismo procesamiento se van a utilizar para las predicciones del sistema de asistencia; la única diferencia será que la ROI estará en región central alta de la imagen para poder detectar el rostro.\par
+Para ello, se desarrolló una función que busca los directorios dentro de una carpeta(la cual en el caso de este proyecto se llama test) para obtener no solo los nombres sino que la etiqueta de la clase para poder crear la base de datos en formato csv.
+
+\subsection{Fase de Procesamiento de Imágenes.}
+
+En esta etapa, se centró el esfuerzo en optimizar el procesamiento de las imágenes para extraer de manera eficiente las características relevantes. Para ello:
+\begin{itemize}
+    \item Se utilizaron los momentos de Hu, que generan siete características invariantes ante transformaciones como traslación, rotación y escalado.
+\end{itemize}
+
+El resultado de este proceso es una base de datos estructurada con las características esenciales de las imágenes, la cual se empleó como entrada para el modelo propuesto (red neuronal).
+
+\subsection{Fase de Desarrollo y Entrenamiento del Modelo de Redes Neuronales.}
+En esta fase, se entrenó un modelo (red neuronal) utilizando las bases de datos generadas en la fase anterior. El modelo será diseñado para realizar predicciones basadas en siete posibles salidas, correspondientes a los nombres:
+\begin{itemize}
+    \item Isabella (0)
+    \item Joshua (1)
+    \item Melissa (2)
+    \item Zain (3)
+    \item Angel (4)
+    \item Jorge (5)
+    \item Cristopher (6) 
+\end{itemize}
+La implementación del modelo se realizó con la biblioteca Sklearn de Python, optimizando su estructura para garantizar un aprendizaje efectivo y resultados precisos. Además, se utilizó la biblioteca \textbf{'joblib'} para guardar tanto el modelo entrenado como la estandarización de los datos. Esto se decidió debido a la sensibilidad que tienen las redes neuronales a la escala de características. Adicionalmente, cada clase tiene un total de 50 imágenes, por lo que daría un total de 350 ejemplos para la base de datos.\par
+
+
+\subsection{Desarrollo de la aplicacion principal.}
+Con la base de datos y el modelo entrenado, se dio paso al desarrollo del pase de lista principal apoyado de bibliotecas como Tkinder de Python. Esto para la visualización de una terminal en pantalla la cual consiste en una pequeña ventana para iniciar el pase de lista o salir de la aplicación.\par
+El primer paso fue desarrollar las funciones principales para los botones de la terminal y algunas complementarias de las mismas. A continuación, se describirán todas las funciones desarrolladas con su propósito.\par 
+
+\begin{enumerate}
+    \item \textbf{get file name()}: Función utilizada para crear el archivo '.txt' con el nombre de la ficha de hoy apoyándose de la biblioteca \textbf{'datetime'}. Su propósito es para crear archivos únicos del día donde se paso la lista.
+    \item \textbf{savemessagetofile()}: Función para guardar el nombre detectado por el alumno junto con la hora de llegada en el '.txt'.
+    \item \textbf{speaktext()}: Función utilizada para leer el mensaje generado después de la predicción junto con la hora llegada y que una voz lo repita. Para esto, se utilizo la biblioteca pyttsx3.
+    \item \textbf{calculateHuMoments()}: Función utilizada para transformar el frame de la cámara en un vector con la estructura de los ejemplos de la red neuronal para poder realizar la predicción. 
+    \item \textbf{getRoiFaces()}: Función utilizada para obtener la región de interés del Frame del video.
+    \item \textbf{faceimagepreprocess()}: Función principal para transformar el frame de la imagen. Se le aplica el preprocesamiento descrito anteriormente para después obtener su región de interés con \textbf{'getRoiFaces'} y transformarlo con \textbf{'calculateHuMoments()'} para así tener el ejemplo con las características de la base de datos.
+    \item \textbf{showresultwindow}: Función principal donde se guarda el mensaje en un archivo .'.txt' después de mostrarlo en una ventana después de la predicción realizada con la función \textbf{'startcamera()'}, esta función tiene el fin principal de guardar la predicción en un '.txt' después de terminar con el calculo de la misma utilizando la función \textbf{'get file name()'} para crear o detractar el '.txt' y \textbf{'savemessagetofile()'} para guardarlo.
+    \item \textbf{startcamera()}: Función principal de la aplicación, se encarga de hacer la predicción del alumno mediante el uso de la cámara y el modelo entrenado. La lógica consiste en cargar el modelo y la estandarización de los datos para después abrir la cámara para detectar frames durante 10 segundos donde cada predicción por frame será guardado en un arreglo llamado \textbf{'predictions'}. Posteriormente se utilizó \textbf{'Counter'} de la biblioteca \textbf{'Collections'} se encuentra el nombre que mas veces apareció, con esto se determina al alumno detectado. Con este se crea el mensaje: \textbf{"Buenos días (clase - predicción). Hora de llegada: (hora actual - zona horario México)"}, para que finalmente sea mencionado por la función \textbf{'speaktext()'} y guardado en el '.txt' utilizando la función \textbf{showresultwindow()} la cual tras cerrarse regresa al menú principal de la aplicación.
+\end{enumerate}
+
+\subsection{Fase de Evaluación y Validación.}
+Una vez entrenado el modelo, se realizó a su evaluación y validación mediante métricas de rendimiento que comparen las predicciones de la red con los resultados esperados. Las métricas incluyeron:
+\begin{itemize}
+    \item Precisión: Proporción de predicciones correctas sobre el total de predicciones realizadas.
+    \item Tasa de error: Proporción de predicciones incorrectas respecto al total.
+\end{itemize}
+Para una mejor visibilidad, se utilizó una matriz de confusión de las clases predichas.
+
+\section{Resultados.}
+El sistema diseñado e implementado demostró ser capaz de capturar imágenes desde una cámara en tiempo real, procesarlas para extraer texto utilizando técnicas de preprocesamiento y OCR, y, posteriormente, identificar subdirectorios y almacenar imágenes según el texto extraído. A continuación, se describen los resultados obtenidos durante la ejecución del sistema con respecto a la detección del texto:
+
+\subsection{Detección de texto y extracción de nombres.}
+Mediante el análisis de las imágenes proporcionadas, se observó que el sistema pudo identificar correctamente regiones de interés y aplicar preprocesamiento (conversión a escala de grises, ampliación, inversión de colores y binarización) para facilitar la extracción del texto mediante pytesseract.
+
+\begin{itemize}
+    \item Imagen 1: Imagen original obtenida aparir de la cámara digital.
+    \item Imagen 2: Imagen de la selección de la región de interés para la búsqueda de texto.
+    \item Imagen 3: Imagen bina rizada para la búsqueda de texto/identificación del nombre del gafete. 
+\end{itemize}
+
+Los nombres extraídos fueron utilizados exitosamente para identificar subdirectorios, demostrando la capacidad del sistema para interpretar información textual desde imágenes capturadas.
+
+\subsection{Tasa de éxito en la extracción de texto.}
+La tasa de éxito en la extracción de texto dependió en gran medida de la calidad de la imagen y del contraste del texto con el fondo. En las imágenes proporcionadas, el sistema logró identificar caracteres alfanuméricos con un nivel aceptable de precisión, aunque en algunos casos presentó dificultades para distinguir caracteres pequeños o poco definidos.
+
+Esto es debido al ruido existente en las imágenes en tiempo real, por la cual se debe realizar un preprocesamiento para la reducción del mismo y mejorar la precisión.
+
+\subsection{Visualización de los resultados.}
+En las pruebas realizadas, se obtuvieron imágenes procesadas que mostraban las regiones detectadas por MSER, indicando que el sistema logró identificar zonas con texto de manera efectiva. Estas zonas fueron fundamentales para optimizar la precisión del OCR en imágenes complejas.
+
+\subsection{Imágenes procesadas.}
+A continuación, se incluyen las imágenes capturadas y los resultados obtenidos del sistema:
+
+
+Imagen 1: Imagen original obtenida mediante una cámara digital.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/meli1.jpg} % Ajusta el tamaño al 50% del ancho del texto
+    \caption{Fotografía de la alumna Melissa sosteniendo su gafete.}
+    \label{fig:etiqueta}
+\end{figure}
+
+Imagen 2: Imagen de la selección de la región de interés para la búsqueda de texto.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{Imagenes_Resultados/meli2.jpg} % Ajusta el tamaño al 50% del ancho del texto
+    \caption{Reducción de la imagen original de acuerdo al gafete.}
+    \label{fig:etiqueta}
+\end{figure}
+
+Imagen 3: Imagen binarizada para la búsqueda de texto/identificación del nombre del gafete.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Imagenes_Resultados/meli3.jpg} % Ajusta el tamaño al 50% del ancho del texto
+    \caption{Conversión de la zona delimitada a binario.}
+    \label{fig:etiqueta}
+\end{figure}
+
+
+
+\textbf{Nota:} Las imágenes muestran el preprocesamiento aplicado, incluyendo la segmentación del texto y las operaciones binarizadas utilizadas para facilitar el reconocimiento. Asimismo, para más observaciones de los resultados ir al apartado \textbf{Imagenes adicionales de los resultados} en el apartado de Anexos.
+
+% \textbf{Imagenes adicionales de los resultados:} Más imágenes sobre los resultados pueden encontrarse en la sección de anexos.
+
+
+
+
+\subsection{Resultados de la predicción con reconocimiento facial.}
+Durante el entrenamiento, el modelo alcanzó una precisión de predicción de 0.9578 (95.78 por ciento). Sin embargo, en la práctica, este rendimiento no siempre se mantiene. \par
+
+La matriz de confusión obtenida durante las pruebas refleja el desempeño del modelo al clasificar correctamente las etiquetas de los individuos reconocidos (Isabella, Joshua, Melissa, Zain, Angel, Jorge y Cristopher). Los resultados muestran lo siguiente:
+
+\begin{itemize}
+    \item Isabella (Clase 0): El modelo identificó correctamente 11 de 11 imágenes, demostrando una precisión perfecta para esta clase.
+    \item Joshua (Clase 1): Se reconocieron correctamente 13 imágenes. No se observaron falsos positivos ni negativos, lo que indica una alta confiabilidad en esta clase.
+    \item Melissa (Clase 2): Aunque 7 imágenes fueron clasificadas correctamente, una fue erróneamente asignada a la clase 6 (Cristopher). Esto sugiere cierta confusión entre estas dos clases.
+    \item Zain (Clase 3): El modelo clasificó correctamente 12 imágenes, pero 1 fue asignada incorrectamente a la clase 6, mostrando un patrón similar al observado en la clase 2.
+    \item Angel (Clase 4): Todas las imágenes de esta clase fueron clasificadas correctamente, indicando una precisión perfecta.
+    \item Jorge (Clase 5): Se clasificaron correctamente 8 imágenes sin errores.
+    \item Cristopher (Clase 6): Aunque 8 imágenes fueron correctamente reconocidas, 1 imagen de la clase 2 y otra de la clase 3 fueron clasificadas erróneamente como Cristopher, evidenciando cierta confusión con estas clases.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{Imagenes_Resultados/matrix.jpg} % Ajusta el tamaño al 50% del ancho del texto
+    \caption{Matriz de confusión de los resultados obtenidos.}
+    \label{fig:etiqueta}
+\end{figure}
+
+%Una de las problemáticas que tiene es la confusion entre Isabella Y Melissa, ya que tiende a predecir de forma mas continua a Melissa, esto probablemente se debe al color de cabello en ambas ya que el cabello de Isabella se cambioa negro durante la binarizacion por lo que el modelo debe pensar que es Melissa.\par 
+%Con respecto a los demas, el algoritmo depende de la altura de las personas. Siendo Joshua la clase que detectaba con mayor facilidad; ademas, las imagenes de Angel tuvieron una corrpucion a la hora de tomarlas que ayudo a una mejor identificacion de la clase.\par 
+
+Una de las problemáticas identificadas es la confusión entre Isabella y Melissa, ya que el modelo tiende a predecir con mayor frecuencia a Melissa. Esto probablemente se debe a que, durante la binarización, el cabello de Isabella se convirtió en negro, lo que pudo llevar al modelo a asociarlo incorrectamente con Melissa.\par
+En cuanto a las demás clases, el algoritmo muestra dependencia de la altura de las personas. Por ejemplo, Joshua es la clase que el modelo detecta con mayor facilidad. Además, las imágenes de Ángel presentaron una corrupción en el momento de su captura, lo que paradójicamente facilitó la identificación de su clase.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/proceso_prediccion.jpg} 
+    \caption{Proceso de identificación}
+    \label{fig:etiqueta}
+\end{figure}
+
+%No obstante, el modelo presenta limitaciones al depender de encontrarse a la distancia correcta de la camara para poder tener una buena predicción, cuajando no el modelo retorna que la persona es Isabella o Melissa aun aunque ellas no estén presentes, ademas uno de los problemas que se tiene es la camara debido a que la calidad de la misma puede llegar a afectar la predicción tal y como se aprecio durante los experimentos en la clase.\par 
+%Adicionalmente, se tomo la desicion que el ejecutable solo incluyeran el modelo entrenado y sin la posibilidad temporal de añadir nuevas imágenes a la base de datos, esto debido a la carga computacional que eso significaba realizar ambos procesos al mismo tiempo y que esto retardaba a la función encargada de leer el texto en voz.\par 
+%Por ultimo, creemos que otra prueba interesante seria la construcción de la base de datos durante el periodo de un ciclo escolar o semestre, para as i agregar variedad a las imágenes ya que las personas sueles cambiar durante el tiempo y analizar si esto ayudaría o afectaría a la predicción.
+
+No obstante, el modelo presenta limitaciones al depender de encontrarse a la distancia correcta de la cámara para lograr una buena predicción. En casos donde esto no se cumple, el modelo tiende a identificar incorrectamente a la persona como Isabella o Melissa, incluso si ninguna de ellas está presente. Además, uno de los problemas detectados radica en la calidad de la cámara, que puede afectar significativamente las predicciones, como se observó durante los experimentos realizados en clase.\par
+
+Adicionalmente, se tomó la decisión de que el programa con interfaz incluyera únicamente el modelo entrenado, sin la posibilidad temporal de añadir nuevas imágenes a la base de datos. Esta decisión se debe a la alta carga computacional que representa realizar ambos procesos de manera simultánea, lo cual generaba retrasos en la función encargada de leer el texto en voz.\par
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/interfax.jpg} 
+    \caption{Interfaz gráfica del programa de pase de lista.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/isa2.jpg} 
+    \caption{Proceso de predicción.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/mensaje_salida.jpg} 
+    \caption{Mensaje de salida.}
+    \label{fig:etiqueta}
+\end{figure}
+
+Por último, consideramos que una prueba interesante sería construir la base de datos a lo largo de un ciclo escolar o semestre. Esto permitiría agregar mayor variedad a las imágenes, ya que las personas tienden a cambiar con el tiempo. Analizar si esta estrategia mejora o perjudica las predicciones podría aportar valiosas conclusiones al desarrollo del modelo.
+
+
+\section{Resultados del Salón de clases}
+Durante la prueba realizada durante el examen nos dimos cuenta que nuestro modelo no predecía correctamente, solo predecía a Melissa y los demás intentos fueron erróneos teniendo un total de 2/11 ejemplos bien predichos.\par 
+Esto nos llevo a revisar el modelo y nos percatamos que el problema fue durante el entrenamiento del mismo; originalmente, se decidió separar la base de datos en 80\% para train y 20\% para test, sin embargo se ajustó a 70\% y 30\% respectivamente  y fue así que el modelo ya pudo predecir correctamente al alumno incluso teniendo menos precisión  que el otro al tener 93.89\%.\par 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Matriz de confusion2.png} 
+    \caption{Matriz de confusión del segundo modelo con 70\% para el entrenamiento y 30\% para la prueba}
+    \label{fig:etiqueta}
+\end{figure}
+Adicionalmente, se le agrego una pausa de 0.5 segundos utilizando la función time.sleep en la obtención de los Frames, esto ayudo mas a la prueba debido a que capturaba menos frames y, por ende, aumentaba la calidad de los frame y junto el modelo, pudieron predecir correctamente ya que no castigaba tanto el momento de cuando se equivocaba en la predicción.\par 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{model1_test.jpg} 
+    \caption{Salida de las pruebas con el modelo original}
+    \label{fig:etiqueta}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{model2_test.jpg} 
+    \caption{Salida de las pruebas con el segundo modelo}
+    \label{fig:etiqueta}
+\end{figure}
+
+\section{Conclusión.}
+El sistema demostró ser funcional para la captura, procesamiento y almacenamiento de imágenes, integrando exitosamente tecnologías como OCR y la generación dinámica de directorios. No obstante, factores como la iluminación, la calidad del texto y el ruido visual pueden influir en su desempeño, lo que señala áreas de mejora. En cuanto a la predicción de rostros, uno de los principales desafíos fue la distancia de la persona a la cámara, una problemática que requirió ajustes diarios durante las sesiones en clase. A pesar de ello, el sistema logró desenvolverse de manera satisfactoria.\par
+Adicionalmente, resolver el problema del segundo modelo nos ayudo a comprender que no siempre nos debemos de confiar de una buena precisión durante el entrenamiento, sobre todo en los problemas de visión donde el ruido en las nuevas entradas puede llegar afectar la salida.Por lo que, nos llevamos como experiencia el comparar la predicción con el resultado en practica para así identificar y realizar los ajustes necesarios.\par 
+Trabajar con visión artificial resultó ser una experiencia muy interesante, pues nos permitió explorar las diversas formas en las que los desarrolladores pueden enviar información a la computadora. Diseñar métodos para transmitir esta información de la manera más efectiva fue un reto sumamente enriquecedor de resolver.
+
+
+\section{Trabajos futuros.}
+A futuro, se planea implementar un sensor que detecte automáticamente si una persona se encuentra cerca, eliminando la necesidad de presionar un botón para el pase de lista. Además, se contempla el uso de un sistema de gestión de bases de datos, como MySQL, para el almacenamiento eficiente de la información. También se buscará que el sistema pueda detectar automáticamente la materia en curso. Esto mediante la adición de un horario escolar, optimizando aún más su funcionalidad.
+
+
+\newpage
+\begin{thebibliography}{00}
+\bibitem{b1} Kodali, R. K., \& Hemadri, R. V. (2021). Attendance management system. In *2021 International Conference on Computer Communication and Informatics (ICCCI)* (pp. 1-5). IEEE.
+
+\bibitem{b2} Rouhiainen, L. (2018). Inteligencia artificial. *Madrid: Alienta Editorial*, 20-21.
+
+\bibitem{b3} García, I., \& Caranqui, V. (2015). La visión artificial y los campos de aplicación. *Tierra infinita*, 1(1), 98-108.
+
+\bibitem{b4} Shoewu, O., \& Idowu, O. A. (2012). Development of attendance management system using biometrics. *The Pacific Journal of Science and Technology*, 13(1), 300-307.
+
+\bibitem{b5} Singh, M., Khan, M. A., Singh, V., Patil, A., Wadar, S., et al. (2015). Attendance management system. In *2015 2nd International Conference on Electronics and Communication Systems (ICECS)* (pp. 418-422). IEEE.
+
+\bibitem{b6} Kim, B.-G. (2016). An implementation of auto attendance management system based on app using NFC technique. *Journal of the Korea Academia-Industrial cooperation Society*, 17(2), 719-723.
+
+\bibitem{b7} Penalva, J. (2024, May). NFC: qué es y para qué sirve en este 2024. *Xataka*. Retrieved from https://www.xataka.com/basics/nfc-que-es-y-para-que-sirve.
+
+\bibitem{b8} Romero, J. (2021, September). ¿Qué es el NFC y para qué sirve?. *Geeknetic*. Retrieved from https://www.geeknetic.es/NFC/que-es-y-para-que-sirve.
+
+\bibitem{b9} R. Smith, "An Overview of the Tesseract OCR Engine," 2007 Ninth International Conference on Document Analysis and Recognition (ICDAR), Curitiba, Brazil, 2007, pp. 629-633, doi: 10.1109/ICDAR.2007.4376991.
+\bibitem{b10} R. Padilla, C. F. F. Costa Filho, and M. G. F. Costa, "Evaluation of Haar cascade classifiers designed for face detection," International Journal of …, 2012. [Online]. Available: Academia.edu.
+
+\bibitem{b11}S. Soo, "Object detection using Haar-cascade Classifier," Institute of Computer Science, University of Tartu, 2014. [Online]. Available: Academia.edu.
+\bibitem{b12} R. N. Chityala and K. R. Hoffmann, "Region of Interest (ROI) computed tomography," Physics of …, 2004. [Online]. Available: spiedigitallibrary.org.
+\bibitem{b13} "re — Regular expression operations," Python Documentation, n.d. [Online]. Available: https://docs.python.org/es/3/library/re.html.
+\bibitem{b14} Hu, M. K. (1962). Visual pattern recognition by moment invariants. IRE transactions on information theory, 8(2), 179-187. 
+
+\bibitem{b15} V. Patel, N. Shah, and R. Patel, "Automated Attendance Management System Based on Face Recognition Algorithms," Proceedings of the IEEE International Conference on Computing, Communication and Networking Technologies (ICCCNT), 2018. [Online]. Available: https://doi.org/10.1109/ICCCNT.2018.8494045.
+
+\bibitem{b16} Chintalapati, S., & Raghunadh, M. (2013). Automated attendance management system based on face recognition algorithms. En 2013 International Conference on Computational Intelligence and Computing Research (ICCIC) (pp. 1-5). IEEE. doi: 10.1109/ICCIC.2013.6724266.
+
+\end{thebibliography}
+
+
+\section{Anexos.}
+\subsection{Código fuente.}
+\lstinputlisting[language=Python, caption={Código del algoritmo en Python.}]{Programas/pasedelistaejecutable.py}
+
+\FloatBarrier
+
+\subsection{Imágenes adicionales del procedimiento.}
+A continuación, se presentan más imágenes adicionales que ilustran el desempeño del sistema en diversas etapas del proceso. Estas imágenes complementan los resultados mostrados anteriormente, ofreciendo una visión más detallada de cómo el sistema maneja las distintas fases de captura, procesamiento y análisis. Estas imágenes permiten observar con mayor claridad las interacciones del sistema con los usuarios y el entorno durante las pruebas realizadas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/josh1.jpg} 
+    \caption{Muestra de la región de interés, con la binarización invertida - Alumno Joshua.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/Isa1.jpg} 
+    \caption{Muestra de la región de interés, con la binarización invertida - Alumna Isabella.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/MELI_1.jpg} 
+    \caption{Muestra de la región de interés, con la binarización invertida - Alumna Melissa.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/critopher1.jpg} 
+    \caption{Muestra de la región de interés, con la binarización invertida - Alumno Cristopher.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/angel1.jpg} 
+    \caption{Muestra de la captura de la cámara, antes de la binarización invertida y selección de interés - Alumno Ángel.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/angel2.jpg} 
+    \caption{Muestra de la región de interés, con la binarización invertida - Alumno Ángel.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Imagenes_Resultados/zain1.jpg} 
+    \caption{Muestra de la región de interés, con la binarización invertida - Alumno Zain.}
+    \label{fig:etiqueta}
+\end{figure}
+
+\end{document}
+
+
+
